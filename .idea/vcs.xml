@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/CppLazy" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Pytorch-RL-CPP" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libeemd" vcs="Git" />
   </component>
 </project>
