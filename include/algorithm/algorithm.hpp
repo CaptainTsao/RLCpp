@@ -17,7 +17,7 @@ class Algorithm {
  public:
   virtual ~Algorithm() = 0;
   virtual std::vector<UpdateDatum> Update(RolloutStorage &rollout_storage,
-                                          float decay_level = 1) = 0;
+                                          float decay_level) = 0;
 };
 inline Algorithm::~Algorithm() = default;
 }

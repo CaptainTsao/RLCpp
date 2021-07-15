@@ -40,7 +40,7 @@ add_executable(example_app
         include/observation_normalizer.hpp
         include/running_mean_std.hpp
         src/algorithm/actorcritic.cpp
-        src/storage.cpp include/generators/feed_forward_generator.hpp src/generators/feed_forward_generator.cpp include/generators/recurrent_generator.hpp src/generators/recurrent_generator.cpp)
+        src/storage.cpp include/generators/feed_forward_generator.hpp src/generators/feed_forward_generator.cpp include/generators/recurrent_generator.hpp src/generators/recurrent_generator.cpp include/algorithm/proximal_policy_optimization.hpp src/algorithm/proximal_policy_optimization.cpp)
 #autoencoder.cpp autoencoder.h VAE_test.cpp
 #add_executable(example_app example_app.cpp)
 target_link_libraries(example_app "${TORCH_LIBRARIES}")
