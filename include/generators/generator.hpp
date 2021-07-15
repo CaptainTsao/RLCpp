@@ -31,7 +31,9 @@ struct MiniBatch {
       action_log_probs_(std::move(action_log_probs)),
       advantages_(std::move(advantages)) {}
 };
+
 class Generator {
+ public:
   virtual ~Generator() = 0;
   virtual bool done() const = 0;
   virtual MiniBatch next() = 0;

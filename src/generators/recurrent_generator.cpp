@@ -5,12 +5,14 @@
 #include "../../include/generators/generator.hpp"
 #include "../../include/generators/recurrent_generator.hpp"
 
+#include <utility>
+
 namespace RLCpp {
 
-torch::Tensor flatten_helper(int timesteps, int processes, torch::Tensor tensor) {
+torch::Tensor flatten_helper(int64_t time_steps, int processes, torch::Tensor tensor) {
   auto tensor_shape = tensor.sizes().vec();
   tensor_shape.erase(tensor_shape.begin());
-  tensor_shape[0] = timesteps * processes;
+  tensor_shape[0] = time_steps * processes;
   return tensor.view(tensor_shape);
 }
 RecurrentGenerator::RecurrentGenerator(int num_processes,
@@ -23,14 +25,14 @@ RecurrentGenerator::RecurrentGenerator(int num_processes,
                                        torch::Tensor masks,
                                        torch::Tensor action_log_probs,
                                        torch::Tensor advantages)
-    : observations_(observations),
-      hidden_states_(hidden_states),
-      actions_(actions),
-      value_predictions_(value_predictions),
-      returns_(returns),
-      masks_(masks),
-      action_log_probs_(action_log_probs),
-      advantages_(advantages),
+    : observations_(std::move(observations)),
+      hidden_states_(std::move(hidden_states)),
+      actions_(std::move(actions)),
+      value_predictions_(std::move(value_predictions)),
+      returns_(std::move(returns)),
+      masks_(std::move(masks)),
+      action_log_probs_(std::move(action_log_probs)),
+      advantages_(std::move(advantages)),
       indices_(torch::randperm(num_processes, torch::TensorOptions(torch::kLong))),
       index_(0),
       num_envs_per_batch_(num_processes / num_mini_batch) {}
@@ -40,7 +42,7 @@ bool RecurrentGenerator::done() const {
 }
 MiniBatch RecurrentGenerator::next() {
   if (index_ >= indices_.size(0)) {
-    throw std::runtime_error("No minibatches left in generator.");
+    throw std::runtime_error("No mini-batches left in generator.");
   }
   MiniBatch mini_batch;
   // Fill minibatch with tensors of shape (timestep, process, *whatever)
@@ -65,21 +67,21 @@ MiniBatch RecurrentGenerator::next() {
   mini_batch.advantages_ = advantages_.narrow(1, env_index, num_envs_per_batch_);
 
   // Flatten tensors to (timestep * process, *whatever)
-  int num_timesteps = mini_batch.observations_.size(0);
+  int64_t num_time_steps = mini_batch.observations_.size(0);
   int num_processes = num_envs_per_batch_;
-  mini_batch.observations_ = flatten_helper(num_timesteps, num_processes,
+  mini_batch.observations_ = flatten_helper(num_time_steps, num_processes,
                                             mini_batch.observations_);
-  mini_batch.actions_ = flatten_helper(num_timesteps, num_processes,
+  mini_batch.actions_ = flatten_helper(num_time_steps, num_processes,
                                        mini_batch.actions_);
-  mini_batch.value_predictions_ = flatten_helper(num_timesteps, num_processes,
+  mini_batch.value_predictions_ = flatten_helper(num_time_steps, num_processes,
                                                  mini_batch.value_predictions_);
-  mini_batch.returns_ = flatten_helper(num_timesteps, num_processes,
+  mini_batch.returns_ = flatten_helper(num_time_steps, num_processes,
                                        mini_batch.returns_);
-  mini_batch.masks_ = flatten_helper(num_timesteps, num_processes,
+  mini_batch.masks_ = flatten_helper(num_time_steps, num_processes,
                                      mini_batch.masks_);
-  mini_batch.action_log_probs_ = flatten_helper(num_timesteps, num_processes,
+  mini_batch.action_log_probs_ = flatten_helper(num_time_steps, num_processes,
                                                 mini_batch.action_log_probs_);
-  mini_batch.advantages_ = flatten_helper(num_timesteps, num_processes,
+  mini_batch.advantages_ = flatten_helper(num_time_steps, num_processes,
                                           mini_batch.advantages_);
 
   index_++;
