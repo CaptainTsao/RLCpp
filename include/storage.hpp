@@ -26,14 +26,31 @@ class RolloutStorage {
                  ActionSpace action_space,
                  int64_t hidden_state_size,
                  torch::Device device);
-  RolloutStorage(std::vector<RolloutStorage *> individual_storage,
+
+  RolloutStorage(std::vector<RolloutStorage *> individual_storages,
                  torch::Device device);
+
   void after_update();
+
   void compute_returns(torch::Tensor next_value,
                        bool use_gae, float gamma, float tau);
+
   std::unique_ptr<Generator> feed_forward_generator(torch::Tensor advantages,
                                                     int num_mini_batch);
-  void set_first_observation(torch::Tensor observation);
+
+  void insert(const torch::Tensor &observation,
+              const torch::Tensor &hidden_state,
+              const torch::Tensor &action,
+              const torch::Tensor &action_log_prob,
+              const torch::Tensor &value_prediction,
+              const torch::Tensor &reward,
+              const torch::Tensor &mask);
+
+  std::unique_ptr<Generator> recurrent_generator(const torch::Tensor &advantages,
+                                                 int num_mini_batch);
+
+  void set_first_observation(const torch::Tensor &observation);
+
   void to(torch::Device device);
 
   inline const torch::Tensor &get_actions() const {
@@ -60,7 +77,9 @@ class RolloutStorage {
   inline const torch::Tensor &get_value_predictions() const {
     return value_predictions_;
   }
-  inline void set_actions(torch::Tensor actions) { this->actions_ = std::move(actions); }
+  inline void set_actions(torch::Tensor actions) {
+    this->actions_ = std::move(actions);
+  }
   inline void set_action_log_probs(torch::Tensor action_log_probs) {
     this->action_log_probs_ = std::move(action_log_probs);
   }

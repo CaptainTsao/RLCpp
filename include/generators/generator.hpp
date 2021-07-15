@@ -33,8 +33,8 @@ struct MiniBatch {
 };
 class Generator {
   virtual ~Generator() = 0;
-  virtual bool Done() const = 0;
-  virtual MiniBatch Next() = 0;
+  virtual bool done() const = 0;
+  virtual MiniBatch next() = 0;
 };
 inline Generator::~Generator() = default;
 }

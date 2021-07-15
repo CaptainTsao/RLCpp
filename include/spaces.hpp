@@ -9,8 +9,8 @@
 
 namespace RLCpp {
 struct ActionSpace {
-  std::string type;
-  std::vector<int64_t> shape;
+  std::string type_;
+  std::vector<int64_t> shape_;
 };
 }
 

@@ -22,7 +22,9 @@ class MLPBase : public NNBase {
   std::vector<torch::Tensor> forward(torch::Tensor inputs,
                                      torch::Tensor hxs,
                                      torch::Tensor masks) override;
-  inline unsigned int get_num_inputs() const { return num_inputs; }
+  inline unsigned int get_num_inputs() const {
+    return num_inputs;
+  }
 
 };
 }

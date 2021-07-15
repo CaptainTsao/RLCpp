@@ -9,8 +9,8 @@
 
 namespace RLCpp {
 struct UpdateDatum {
-  std::string name;
-  float value;
+  std::string name_;
+  float value_;
 };
 
 class Algorithm {

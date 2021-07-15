@@ -15,7 +15,7 @@ class ActorCritic : public Algorithm {
   Policy &policy_;
   float actor_loss_coef_, value_loss_coef_, entropy_coef_,
       max_grad_norm_, original_learning_rate_;
-  std::unique_ptr<torch::optim::Adam> optimizer;  /* can choose RMSprop */
+  std::unique_ptr<torch::optim::RMSprop> optimizer_;  /* can choose RMSprop */
  public:
   ActorCritic(Policy &policy,
               float actor_loss_coef,
@@ -26,7 +26,7 @@ class ActorCritic : public Algorithm {
               float alpha = 0.99,
               float max_grad_norm = 0.5);
 
-  std::vector<UpdateDatum> Update(RolloutStorage &rollout_storage, float decay_level = 1);
+  std::vector<UpdateDatum> Update(RolloutStorage &rollout_storage, float decay_level);
 };
 }
 
