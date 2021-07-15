@@ -2,7 +2,6 @@
 // Created by transwarp on 2021/7/15.
 //
 
-#include "../../include/algorithm/algorithm.hpp"
 #include "../../include/algorithm/proximal_policy_optimization.hpp"
 #include "../../include/model/mlp_base.hpp"
 #include "../../include/model/policy.hpp"
@@ -28,14 +27,17 @@ ProximalPolicyOptimization::ProximalPolicyOptimization(Policy &policy,
     original_learning_rate_(learning_rate),
     original_clip_param_(clip_param),
     kl_target_(kl_target),
+    num_epoch_(num_epoch),
+    num_mini_batch_(num_mini_batch),
     optimizer_(std::make_unique<torch::optim::Adam>(
         policy->parameters(),
         torch::optim::AdamOptions(learning_rate).eps(epsilon)
-        ))
-    {
+    )) {}
 
-}
 std::vector<UpdateDatum> ProximalPolicyOptimization::Update(RolloutStorage &rollout_storage, float decay_level) {
-  return std::vector<UpdateDatum>();
+  /* Decay lr and clip parameter */
+  float clip_param = original_clip_param_ * decay_level;
+  optimizer_->defaults().clone().swap();
+  return NULL;
 }
 } // namespace RLCpp

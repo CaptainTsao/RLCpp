@@ -16,9 +16,10 @@ class RolloutStorage;
 class ProximalPolicyOptimization : public Algorithm {
  private:
   Policy &policy_;
-  float actor_loss_coef_{}, value_loss_coef_{}, entropy_coef_{},
-      max_grad_norm_{}, original_learning_rate_{},
-      original_clip_param_{}, kl_target_{};
+  float actor_loss_coef_, value_loss_coef_, entropy_coef_,
+      max_grad_norm_, original_learning_rate_,
+      original_clip_param_, kl_target_;
+  int num_epoch_, num_mini_batch_;
   std::unique_ptr<torch::optim::Adam> optimizer_;
 
  public:
