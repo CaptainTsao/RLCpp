@@ -20,7 +20,7 @@ class ActorCritic : public Algorithm {
   ActorCritic(Policy &policy,
               float actor_loss_coef,
               float value_loss_coef,
-              float entroy_coef,
+              float entropy_coef,
               float learning_rate,
               float epsilon = 1e-8,
               float alpha = 0.99,

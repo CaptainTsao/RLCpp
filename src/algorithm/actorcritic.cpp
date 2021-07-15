@@ -11,24 +11,26 @@
 #include "../../include/storage.hpp"
 
 namespace RLCpp {
+
 ActorCritic::ActorCritic(RLCpp::Policy &policy,
                          float actor_loss_coef,
                          float value_loss_coef,
-                         float entroy_coef,
+                         float entropy_coef,
                          float learning_rate,
                          float epsilon,
                          float alpha,
-                         float max_grad_norm)
-    : policy_(policy),
-      actor_loss_coef_(actor_loss_coef),
-      value_loss_coef_(value_loss_coef),
-      entropy_coef_(entroy_coef),
-      max_grad_norm_(max_grad_norm),
-      original_learning_rate_(learning_rate),
-      optimizer_(std::make_unique<torch::optim::RMSprop>(
-          policy->parameters(),
-          torch::optim::RMSpropOptions(learning_rate).eps(epsilon).alpha(alpha)
-      )) {}
+                         float max_grad_norm) :
+    policy_(policy),
+    actor_loss_coef_(actor_loss_coef),
+    value_loss_coef_(value_loss_coef),
+    entropy_coef_(entropy_coef),
+    max_grad_norm_(max_grad_norm),
+    original_learning_rate_(learning_rate),
+    optimizer_(std::make_unique<torch::optim::RMSprop>(
+        policy->parameters(),
+        torch::optim::RMSpropOptions(learning_rate).eps(epsilon).alpha(alpha)
+    )) {}
+
 std::vector<UpdateDatum> ActorCritic::Update(RolloutStorage &rollout_storage, float decay_level) {
   // Decay learning rate
   // Prep work
@@ -38,8 +40,8 @@ std::vector<UpdateDatum> ActorCritic::Update(RolloutStorage &rollout_storage, fl
   obs_shape.insert(obs_shape.begin(), -1);
   auto action_shape = rollout_storage.get_actions().size(-1);
   auto rewards_shape = rollout_storage.get_rewards().sizes();
-  int num_steps = rewards_shape[0];
-  int num_processes = rewards_shape[1];
+  int64_t num_steps = rewards_shape[0];
+  int64_t num_processes = rewards_shape[1];
 
   // Update observation normalizer
   if (policy_->using_observation_normalizer()) {
@@ -67,9 +69,7 @@ std::vector<UpdateDatum> ActorCritic::Update(RolloutStorage &rollout_storage, fl
   auto action_loss = -(advantages.detach() * action_log_probs).mean();
 
   // Total loss
-  auto loss = (value_loss * value_loss_coef_ +
-      action_loss -
-      evaluate_result[2] * entropy_coef_);
+  auto loss = (value_loss * value_loss_coef_ + action_loss - evaluate_result[2] * entropy_coef_);
 
   // Step optimizer
   optimizer_->zero_grad();
@@ -94,7 +94,7 @@ static void learn_pattern(Policy &policy, RolloutStorage &storage, ActorCritic &
       }
       auto actions = act_result[1];
 
-      auto rewards = actions;
+      const auto &rewards = actions;
       storage.insert(observation,
                      torch::zeros({2, 5}),
                      actions,
@@ -115,7 +115,7 @@ static void learn_pattern(Policy &policy, RolloutStorage &storage, ActorCritic &
     }
     storage.compute_returns(next_value, false, 0., 0.9);
 
-    actor_critic.Update(storage,1);
+    actor_critic.Update(storage, 1);
     storage.after_update();
   }
 }
@@ -158,7 +158,7 @@ static void learn_game(Policy &policy, RolloutStorage &storage, ActorCritic &act
     }
     storage.compute_returns(next_value, false, 0.1, 0.9);
 
-    actor_critic.Update(storage,1);
+    actor_critic.Update(storage, 1);
     storage.after_update();
   }
 }

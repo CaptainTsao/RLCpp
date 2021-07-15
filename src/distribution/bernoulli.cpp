@@ -42,7 +42,7 @@ torch::Tensor Bernoulli::log_prob(torch::Tensor value) {
                                                   torch::Tensor(),
                                                   torch::Reduction::None);
 }
-torch::Tensor Bernoulli::sample(c10::ArrayRef<int64_t> sample_shape) {
+torch::Tensor Bernoulli::sample(const c10::ArrayRef<int64_t> &sample_shape) {
   auto ext_sample_shape = extended_shape(sample_shape);
   torch::NoGradGuard no_grad_guard;
   return torch::bernoulli(probs_.expand(ext_sample_shape));

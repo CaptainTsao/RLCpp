@@ -42,7 +42,7 @@ torch::Tensor Categorical::log_prob(torch::Tensor value) {
   value = value.narrow(-1, 0, 1);
   return broad_casted_tensors[1].gather(-1, value).squeeze(-1);;
 }
-torch::Tensor Categorical::sample(c10::ArrayRef<int64_t> sample_shape) {
+torch::Tensor Categorical::sample(const c10::ArrayRef<int64_t> &sample_shape) {
   auto ext_sample_shape = extended_shape(sample_shape);
   auto param_shape = ext_sample_shape;
   param_shape.insert(param_shape.end(), {num_events_});

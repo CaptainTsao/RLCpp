@@ -33,7 +33,7 @@ class PolicyImpl : public torch::nn::Module {
   std::vector<torch::Tensor> evaluate_actions(torch::Tensor inputs,
                                               torch::Tensor rnn_hxs,
                                               torch::Tensor masks,
-                                              torch::Tensor actions) const;
+                                              const torch::Tensor& actions) const;
   torch::Tensor get_probs(torch::Tensor inputs,
                           torch::Tensor rnn_hxs,
                           torch::Tensor masks) const;

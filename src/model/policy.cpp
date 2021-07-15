@@ -19,21 +19,21 @@ PolicyImpl::PolicyImpl(ActionSpace action_space,
     : action_space_(std::move(action_space)),
       nn_base_(register_module("base", std::move(base))),
       observation_normalizer_(nullptr) {
-  int64_t num_outputs = action_space_.shape[0];
-  if (action_space_.type == "Discrete") {
+  int64_t num_outputs = action_space_.shape_[0];
+  if (action_space_.type_ == "Discrete") {
     output_layer_ = std::make_shared<CategoricalOutput>(
         nn_base_->get_output_size(), num_outputs
     );
-  } else if (action_space_.type == "Box") {
+  } else if (action_space_.type_ == "Box") {
     output_layer_ = std::make_shared<NormalOutput>(
         nn_base_->get_output_size(), num_outputs
     );
-  } else if (action_space_.type == "MultiBinary") {
+  } else if (action_space_.type_ == "MultiBinary") {
     output_layer_ = std::make_shared<BernoulliOutput>(
         nn_base_->get_output_size(), num_outputs
     );
   } else {
-    throw std::runtime_error("Action space " + action_space_.type + " not supported");
+    throw std::runtime_error("Action space " + action_space_.type_ + " not supported");
   }
   register_module("output", output_layer_);
   if (normalize_observations) {
@@ -54,7 +54,7 @@ std::vector<torch::Tensor> PolicyImpl::act(torch::Tensor inputs,
   auto action = dist->sample({0});
   auto action_log_probs = dist->log_prob(action);
 
-  if (action_space_.type == "Discrete") {
+  if (action_space_.type_ == "Discrete") {
     action = action_log_probs.unsqueeze(-1);
     action_log_probs = action_log_probs.unsqueeze(-1);
   } else {
@@ -65,18 +65,19 @@ std::vector<torch::Tensor> PolicyImpl::act(torch::Tensor inputs,
           action_log_probs,
           base_output[2]}; // rnn_hxs
 }
-std::vector<torch::Tensor> PolicyImpl::evaluate_actions(torch::Tensor inputs,
-                                                        torch::Tensor rnn_hxs,
-                                                        torch::Tensor masks,
-                                                        torch::Tensor actions) const {
+std::vector<torch::Tensor>
+PolicyImpl::evaluate_actions(torch::Tensor inputs,
+                             torch::Tensor rnn_hxs,
+                             torch::Tensor masks,
+                             const torch::Tensor& actions) const {
   if (observation_normalizer_) {
     inputs = observation_normalizer_->process_observation(inputs);
   }
-  auto base_output = nn_base_->forward(inputs, rnn_hxs, masks);
+  auto base_output = nn_base_->forward(inputs, std::move(rnn_hxs), masks);
   auto dist = output_layer_->forward(base_output[1]);
 
   torch::Tensor action_log_probs;
-  if (action_space_.type == "Discrete") {
+  if (action_space_.type_ == "Discrete") {
     action_log_probs = dist->log_prob(actions.unsqueeze(-1)).
         view({actions.size(0), -1}).
         sum(-1).

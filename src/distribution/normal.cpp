@@ -21,7 +21,7 @@ torch::Tensor Normal::log_prob(torch::Tensor value) {
   auto log_scale = scale_.log();
   return (-(value - loc_).pow(2) / (2 * variance) - log_scale - std::log(std::sqrt(2 * M_PI)));
 }
-torch::Tensor Normal::sample(c10::ArrayRef<int64_t> sample_shape) {
+torch::Tensor Normal::sample(const c10::ArrayRef<int64_t> &sample_shape) {
   auto shape = extended_shape(sample_shape);
   auto no_grad_guard = torch::NoNamesGuard();
   return at::normal(loc_.expand(shape), scale_.expand(shape));
