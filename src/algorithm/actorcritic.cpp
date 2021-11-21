@@ -3,9 +3,12 @@
 //
 
 
-#include "../../include/algorithm/actorcritic.hpp"
-#include "../../include/model/mlp_base.hpp"
-#include "../../include/model/policy.hpp"
+#include "algorithm/actorcritic.hpp"
+#include "model/mlp_base.hpp"
+#include "model/policy.hpp"
+#include "storage.hpp"
+#include "spaces.hpp"
+#include "third_party/doctest.hpp"
 
 namespace RLCpp {
 
@@ -30,6 +33,12 @@ ActorCritic::ActorCritic(RLCpp::Policy &policy,
 
 std::vector<UpdateDatum> ActorCritic::Update(RolloutStorage &rollout_storage, float decay_level) {
   // Decay learning rate
+  for (auto &group : optimizer_->param_groups()) {
+    if (group.has_options()) {
+      auto &options = dynamic_cast<torch::optim::RMSpropOptions &>(group.options());
+      options.lr(options.lr() * decay_level);
+    }
+  }
   // Prep work
   auto full_obs_shape = rollout_storage.get_observations().sizes();
   std::vector<int64_t> obs_shape(full_obs_shape.begin() + 2,
@@ -77,6 +86,7 @@ std::vector<UpdateDatum> ActorCritic::Update(RolloutStorage &rollout_storage, fl
           {"Action loss", action_loss.item().toFloat()},
           {"Entropy", evaluate_result[2].item().toFloat()}};
 }
+
 static void learn_pattern(Policy &policy, RolloutStorage &storage, ActorCritic &actor_critic) {
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 5; ++j) {

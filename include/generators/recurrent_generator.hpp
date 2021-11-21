@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_GENERATORS_RECURRENT_GENERATOR_HPP_
-#define EXAMPLE_APP_INCLUDE_GENERATORS_RECURRENT_GENERATOR_HPP_
+#ifndef RECURRENT_GENERATOR_HPP_
+#define RECURRENT_GENERATOR_HPP_
 #include "generator.hpp"
 
 namespace RLCpp {

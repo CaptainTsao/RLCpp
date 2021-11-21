@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_MODEL_OUTPUT_LAYERS_HPP_
-#define EXAMPLE_APP_INCLUDE_MODEL_OUTPUT_LAYERS_HPP_
+#ifndef OUTPUT_LAYERS_HPP_
+#define OUTPUT_LAYERS_HPP_
 
 #include "../distributions/distribution.hpp"
 namespace RLCpp {

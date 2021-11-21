@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/7.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_SPACES_HPP_
-#define EXAMPLE_APP_INCLUDE_SPACES_HPP_
+#ifndef SPACES_HPP_
+#define SPACES_HPP_
 
 #include <torch/torch.h>
 

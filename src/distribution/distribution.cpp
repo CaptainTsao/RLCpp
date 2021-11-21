@@ -2,7 +2,7 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/distributions/distribution.hpp"
+#include "distributions/distribution.hpp"
 
 namespace RLCpp {
 std::vector<int64_t> Distribution::extended_shape(const c10::ArrayRef<int64_t> &sample_shape) {

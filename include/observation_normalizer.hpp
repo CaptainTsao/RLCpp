@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_MODEL_OBSERVATION_NORMALIZER_HPP_
-#define EXAMPLE_APP_INCLUDE_MODEL_OBSERVATION_NORMALIZER_HPP_
+#ifndef OBSERVATION_NORMALIZER_HPP_
+#define OBSERVATION_NORMALIZER_HPP_
 
 #include "running_mean_std.hpp"
 
@@ -22,10 +22,10 @@ class ObservationNormalizerImpl : public torch::nn::Module {
                             float clip = 10.);
   explicit ObservationNormalizerImpl(const std::vector<ObservationNormalizer> &others);
 
-  torch::Tensor process_observation(torch::Tensor observation) const;
+  torch::Tensor process_observation(torch::Tensor& observation) const;
   std::vector<float> get_mean() const;
   std::vector<float> get_variance() const;
-  void update(torch::Tensor observations);
+  void update(torch::Tensor& observations);
 
   inline float get_clip_value() const {
     return clip_.item().toFloat();

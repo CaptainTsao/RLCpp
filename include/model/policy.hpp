@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_MODEL_POLICY_HPP_
-#define EXAMPLE_APP_INCLUDE_MODEL_POLICY_HPP_
+#ifndef POLICY_HPP_
+#define POLICY_HPP_
 #include <torch/torch.h>
 
 #include "nn_base.hpp"

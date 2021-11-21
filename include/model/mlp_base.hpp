@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/7.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_MODEL_MLP_BASE_HPP_
-#define EXAMPLE_APP_INCLUDE_MODEL_MLP_BASE_HPP_
+#ifndef MLP_BASE_HPP_
+#define MLP_BASE_HPP_
 
 #include <torch/torch.h>
 #include "nn_base.hpp"

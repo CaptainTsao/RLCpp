@@ -2,7 +2,7 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/distributions/bernoulli.hpp"
+#include "distributions/bernoulli.hpp"
 
 namespace RLCpp {
 Bernoulli::Bernoulli(const torch::Tensor *probs,

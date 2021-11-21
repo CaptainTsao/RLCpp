@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/model/nn_base.hpp"
-#include "../../include/model/model_utils.hpp"
+#include "model/nn_base.hpp"
+#include "model/model_utils.hpp"
 
 namespace RLCpp {
 NNBase::NNBase(bool recurrent,

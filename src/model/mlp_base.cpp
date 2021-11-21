@@ -1,8 +1,8 @@
 //
 // Created by transwarp on 2021/7/8.
 //
-#include "../../include/model/mlp_base.hpp"
-#include "../../include/model/model_utils.hpp"
+#include "model/mlp_base.hpp"
+#include "model/model_utils.hpp"
 
 namespace RLCpp {
 
