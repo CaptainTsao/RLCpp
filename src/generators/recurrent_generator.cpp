@@ -2,10 +2,10 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/generators/generator.hpp"
-#include "../../include/generators/recurrent_generator.hpp"
-
 #include <utility>
+
+#include "generators/generator.hpp"
+#include "generators/recurrent_generator.hpp"
 
 namespace RLCpp {
 

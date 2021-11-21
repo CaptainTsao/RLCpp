@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/7.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_GENERATORS_GENERATOR_HPP_
-#define EXAMPLE_APP_INCLUDE_GENERATORS_GENERATOR_HPP_
+#ifndef _GENERATOR_HPP_
+#define _GENERATOR_HPP_
 #include <torch/torch.h>
 
 #include <utility>

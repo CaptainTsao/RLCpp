@@ -1,0 +1,8 @@
+//
+// Created by CaoRui on 2021/11/22.
+//
+
+#ifndef CPPRL_EXAMPLE_COMMUNICATOR_H_
+#define CPPRL_EXAMPLE_COMMUNICATOR_H_
+
+#endif //CPPRL_EXAMPLE_COMMUNICATOR_H_

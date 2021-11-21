@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_DISTRIBUTIONS_DISTRIBUTION_HPP_
-#define EXAMPLE_APP_INCLUDE_DISTRIBUTIONS_DISTRIBUTION_HPP_
+#ifndef DISTRIBUTION_HPP_
+#define DISTRIBUTION_HPP_
 #include <torch/torch.h>
 
 namespace RLCpp {

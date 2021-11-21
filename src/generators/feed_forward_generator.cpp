@@ -2,9 +2,9 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/generators/feed_forward_generator.hpp"
-
 #include <utility>
+
+#include "generators/feed_forward_generator.hpp"
 
 namespace RLCpp {
 

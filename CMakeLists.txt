@@ -1,48 +1,90 @@
-cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
-project(example_app CXX C)
+cmake_minimum_required(VERSION 3.15.0)
+project(RLCpp
+        LANGUAGES CXX C
+        VERSION 1.0.0
+        DESCRIPTION "Reinforcement learning in C++ using PyTorch"
+        )
 
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libtorch")
-
+# Project-wide properties
 set(CMAKE_CXX_STANDARD 14)
-#message(${CMAKE_CURRENT_SOURCE_DIR})
-find_package(Torch REQUIRED)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}${TORCH_CXX_FLAGS}")
 
-list(APPEND LIGHTSTEP_LINK_LIBRARY glog pthread )
+# Cppcheck
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    list(APPEND CPPCHECK_ARGS
+            --enable=warning
+            --std=c++14
+            --force
+            --verbose
+            --quiet
+            --inline-suppr
+            --error-exitcode=1
+            --language=c++
+            --config-exclude=${CMAKE_CURRENT_LIST_DIR}/src/third_party
+            --config-exclude=${CMAKE_CURRENT_LIST_DIR}/lib
+            -i${CMAKE_CURRENT_LIST_DIR}/example/lib
+            --suppressions-list=${CMAKE_CURRENT_LIST_DIR}/CppCheckSuppressions.txt
+            -I ${CMAKE_CURRENT_LIST_DIR}/src
+            -I ${CMAKE_CURRENT_LIST_DIR}/include
+            -I ${CMAKE_CURRENT_LIST_DIR}/example
+            ${CMAKE_CURRENT_LIST_DIR}/src
+            ${CMAKE_CURRENT_LIST_DIR}/example
+            )
 
-add_executable(example_app
-        main.cpp
-        include/spaces.hpp
-        include/generators/generator.hpp
-        include/storage.hpp
-        include/algorithm/algorithm.hpp
-        include/algorithm/actorcritic.hpp
-        include/model/model_utils.hpp
-        include/model/nn_base.hpp
-        include/model/mlp_base.hpp
-        src/model/model_utils.cpp
-        src/model/mlp_base.cpp
-        src/model/nn_base.cpp
-        src/model/policy.cpp
-        include/model/policy.hpp
-        include/distributions/distribution.hpp
-        src/distribution/distribution.cpp
-        include/distributions/bernoulli.hpp
-        src/distribution/bernoulli.cpp
-        include/distributions/normal.hpp
-        src/distribution/normal.cpp
-        include/distributions/categorical.hpp
-        src/distribution/categorical.cpp
-        src/third_party/doctest.hpp
-        src/third_party/doctest.cpp
-        include/model/output_layers.hpp
-        src/model/output_layers.cpp
-        include/observation_normalizer.hpp
-        include/running_mean_std.hpp
-        src/algorithm/actorcritic.cpp
-        src/storage.cpp include/generators/feed_forward_generator.hpp src/generators/feed_forward_generator.cpp include/generators/recurrent_generator.hpp src/generators/recurrent_generator.cpp include/algorithm/proximal_policy_optimization.hpp src/algorithm/proximal_policy_optimization.cpp)
-#autoencoder.cpp autoencoder.h VAE_test.cpp
-#add_executable(example_app example_app.cpp)
-target_link_libraries(example_app "${TORCH_LIBRARIES}")
-set_property(TARGET example_app PROPERTY CXX_STANDARD 14)
+    add_custom_target(
+            check
+            COMMAND cppcheck ${CPPCHECK_ARGS}
+            COMMENT "Running Cppcheck"
+    )
+endif (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 
+# Dependencies
+set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libtorch")
+## PyTorch
+if (NOT TORCH_FOUND)
+    find_package(Torch REQUIRED)
+    if (TORCH_CXX_FLAGS)
+        set(CMAKE_CXX_FLAGS ${TORCH_CXX_FLAGS})
+    endif ()
+endif (NOT TORCH_FOUND)
+
+# Define targets
+add_library(RLCpp STATIC "")
+target_compile_definitions(RLCpp PRIVATE DOCTEST_CONFIG_DISABLE)
+option(CPPRL_BUILD_TESTS "Whether or not to build the RLCpp tests" OFF)
+if (CPPRL_BUILD_TESTS)
+    add_executable(rlcpp_tests "")
+endif (CPPRL_BUILD_TESTS)
+
+# Enable all warnings
+if (MSVC)
+    target_compile_options(RLCpp PRIVATE /W0)
+else (MSVC)
+    target_compile_options(RLCpp PRIVATE -Wall -Wextra -pedantic)
+endif (MSVC)
+
+# Includes
+set(CPPRL_INCLUDE_DIRS
+    include
+    src
+    ${TORCH_INCLUDE_DIRS}
+    )
+target_include_directories(RLCpp PRIVATE ${CPPRL_INCLUDE_DIRS})
+if (CPPRL_BUILD_TESTS)
+    target_include_directories(rlcpp_tests PRIVATE ${CPPRL_INCLUDE_DIRS})
+endif (CPPRL_BUILD_TESTS)
+
+# Linking
+target_link_libraries(RLCpp torch ${TORCH_LIBRARIES})
+target_link_libraries(RLCpp torch ${TORCH_LIBRARIES})
+if (CPPRL_BUILD_TESTS)
+    target_link_libraries(rlcpp_tests torch ${TORCH_LIBRARIES})
+endif (CPPRL_BUILD_TESTS)
+
+# Example
+option(CPPRL_BUILD_EXAMPLE "Whether or not to build the RLCpp Gym example" ON)
+if (CPPRL_BUILD_EXAMPLE)
+    add_subdirectory(example)
+endif (CPPRL_BUILD_EXAMPLE)
+
+# Recurse into source tree
+add_subdirectory(src)

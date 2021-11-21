@@ -2,7 +2,7 @@
 // Created by transwarp on 2021/7/7.
 //
 #include <torch/torch.h>
-#include "../../include/model/model_utils.hpp"
+#include "model/model_utils.hpp"
 
 namespace RLCpp {
 

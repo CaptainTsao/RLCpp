@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/7.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_STORAGE_HPP_
-#define EXAMPLE_APP_INCLUDE_STORAGE_HPP_
+#ifndef STORAGE_HPP_
+#define STORAGE_HPP_
 #include <c10/util/ArrayRef.h>
 #include <torch/torch.h>
 

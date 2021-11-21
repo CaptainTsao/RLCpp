@@ -2,14 +2,14 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/model/policy.hpp"
-
 #include <utility>
-#include "../../include/distributions/categorical.hpp"
-#include "../../include/model/mlp_base.hpp"
-#include "../../include/model/output_layers.hpp"
-#include "../../include/observation_normalizer.hpp"
-#include "../../include/spaces.hpp"
+
+#include "spaces.hpp"
+#include "model/policy.hpp"
+#include "distributions/categorical.hpp"
+#include "model/mlp_base.hpp"
+#include "model/output_layers.hpp"
+#include "observation_normalizer.hpp"
 
 namespace RLCpp {
 

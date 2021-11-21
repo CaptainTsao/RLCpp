@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_RUNNING_MEAN_STD_HPP_
-#define EXAMPLE_APP_INCLUDE_RUNNING_MEAN_STD_HPP_
+#ifndef RUNNING_MEAN_STD_HPP_
+#define RUNNING_MEAN_STD_HPP_
 
 #include <torch/torch.h>
 
@@ -11,13 +11,13 @@ namespace RLCpp {
 class RunningMeanStdImpl : public torch::nn::Module {
  private:
   torch::Tensor count_, mean_, variance_;
-  void update_from_moments(torch::Tensor batch_mean,
-                           torch::Tensor batch_var,
+  void update_from_moments(torch::Tensor &batch_mean,
+                           torch::Tensor &batch_var,
                            int batch_count);
 
  public:
   explicit RunningMeanStdImpl(int size);
-  RunningMeanStdImpl(std::vector<float> means, std::vector<float> variances);
+  RunningMeanStdImpl(std::vector<float> &means, std::vector<float> &variances);
 
   void update(torch::Tensor observation);
 

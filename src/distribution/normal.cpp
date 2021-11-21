@@ -2,7 +2,7 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/distributions/normal.hpp"
+#include "distributions/normal.hpp"
 
 namespace RLCpp {
 Normal::Normal(const torch::Tensor loc,

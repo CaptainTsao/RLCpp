@@ -2,12 +2,13 @@
 // Created by transwarp on 2021/7/7.
 //
 
-#include "../../include/generators/feed_forward_generator.hpp"
-#include "../../include/generators/recurrent_generator.hpp"
-#include "../../include/storage.hpp"
-
 #include <utility>
-#include "../../include/spaces.hpp"
+
+#include "generators/feed_forward_generator.hpp"
+#include "generators/recurrent_generator.hpp"
+#include "storage.hpp"
+
+#include "spaces.hpp"
 
 namespace RLCpp {
 

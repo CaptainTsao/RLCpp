@@ -2,12 +2,12 @@
 // Created by transwarp on 2021/7/8.
 //
 //#include <memory>
-#include "../../include/model/output_layers.hpp"
-#include "../../include/model/model_utils.hpp"
-#include "../../include/distributions//distribution.hpp"
-#include "../../include/distributions/bernoulli.hpp"
-#include "../../include/distributions/categorical.hpp"
-#include "../../include/distributions/normal.hpp"
+#include "model/output_layers.hpp"
+#include "model/model_utils.hpp"
+#include "distributions//distribution.hpp"
+#include "distributions/bernoulli.hpp"
+#include "distributions/categorical.hpp"
+#include "distributions/normal.hpp"
 
 namespace RLCpp {
 

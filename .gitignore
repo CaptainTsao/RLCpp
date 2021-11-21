@@ -1,5 +1,5 @@
-cmake-build-debug/
-libtorch/
+/cmake-build-debug/
+/libtorch/
 *.out
-build
-.idea
+/build
+/.idea/

@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#ifndef EXAMPLE_APP_INCLUDE_DISTRIBUTIONS_NORMAL_HPP_
-#define EXAMPLE_APP_INCLUDE_DISTRIBUTIONS_NORMAL_HPP_
+#ifndef NORMAL_HPP_
+#define NORMAL_HPP_
 #include <c10/util/ArrayRef.h>
 #include <torch/torch.h>
 

@@ -13,8 +13,9 @@ class RolloutStorage;
 class ActorCritic : public Algorithm {
  private:
   Policy &policy_;
-  float actor_loss_coef_, value_loss_coef_, entropy_coef_,
-      max_grad_norm_, original_learning_rate_;
+  float actor_loss_coef_, value_loss_coef_,
+      entropy_coef_, max_grad_norm_,
+      original_learning_rate_;
   std::unique_ptr<torch::optim::RMSprop> optimizer_;  /* can choose RMSprop */
  public:
   ActorCritic(Policy &policy,

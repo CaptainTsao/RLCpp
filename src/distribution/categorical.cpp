@@ -2,8 +2,8 @@
 // Created by transwarp on 2021/7/8.
 //
 
-#include "../../include/distributions/categorical.hpp"
-#include "../third_party/doctest.hpp"
+#include "distributions/categorical.hpp"
+#include "third_party/doctest.hpp"
 
 namespace RLCpp {
 Categorical::Categorical(const torch::Tensor *probs, const torch::Tensor *logits) {
